@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load mptt_tags %}
+{% block content %}
+<div class="row">
+    <dov class="col-md-12">
+        <table class="table table-striped">
+            <thead class="thead-inverse">
+            <tr>
+                <form>
+                    <th><input id='id' name='id' type="submit" value="Employee ID"></th>
+                    <th><input type="submit" name="name" value="NAME"></th>
+                    <th><input type="submit" name="job_title" value="JOB TITLE"></th>
+                    <th><input type="submit" name="salary" value="SALARY"></th>
+                    <th>Manager</th>
+                    <th>UPDATE</th>
+                    <th>DELETE</th>
+                </form>
+            </tr>
+            </thead>
+            <tbody class='table-striped'>
+            {% recursetree employees %}
+            <tr>
+                <td>{{ node.id }}</td>
+                <td>{{ node.name }}</td>
+                <td>{{ node.job_title }}</td>
+                <td>{{ node.salary }}</td>
+                <td> ID {{ node.parent.id }} NAME {{ node.parent.name }}</td>
+                {% if request.user.is_authenticated %}
+                <td><a href="{% url 'staff_update' node.id %}">
+                    <button> UPDATE</button>
+                </a></td>
+                <td><a href="{% url 'staff_delete' node.id %}">
+                    <button> DELETE</button>
+                </a></td>
+                {% endif %}
+                {% if not node.is_leaf_node %}
+            <tr>
+                <td class="children">
+                    {{ children }}
+                </td>
+                {% endif %}
+            </tr>
+            {% endrecursetree %}
+            </tbody>
+        </table>
+    </dov>
+</div>
+{% endblock %}

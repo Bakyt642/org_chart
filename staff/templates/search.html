@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+{% if query %}
+<h1>Staff containing "{{ query }}"</h1>
+<h3>
+{% with results.count as total_results %}
+Found {{ total_results }} result{{ total_results|pluralize }}
+{% endwith %}
+</h3>
+{% for staff in results %}
+<h4>{{ staff.name }}</h4>
+{{ staff.job_title }}
+{% empty %}
+<p>There are no results for your query.</p>
+{% endfor %}
+{% else %}
+No Search. you forgot
+
+{% endif %}
+{% endblock %}
